@@ -1,23 +1,28 @@
-OPENAI_API_KEY = "KEY HERE"
+
 
 # Import necessary libraries
 import os, re
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+
+from langchain.chains import ConversationalRetrievalChain
 from flask import Flask, render_template, request, redirect
 from PyPDF2 import PdfReader
 
-#Please install PdfReader
-from openai import OpenAI
+from groq import Groq
+from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceEmbeddings
 
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.chat_models import ChatOpenAI
+
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 
+from dotenv import load_dotenv
 
-#os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 
 start_greeting = ["hi","hello"]
 end_greeting = ["bye"]
@@ -35,8 +40,8 @@ vectorstore = None
 conversation_chain = None
 chat_history = []
 rubric_text = ""
-openai_client = OpenAI(
-    api_key = OPENAI_API_KEY
+groq_client = Groq(
+    api_key=GROQ_API_KEY
 )
 
 class HumanMessage:
@@ -81,22 +86,36 @@ def get_text_chunks(text):
     return chunks
 
 def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings()
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
+
+    vectorstore = FAISS.from_texts(
+        texts=text_chunks,
+        embedding=embeddings
+    )
+
     return vectorstore
 
+
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
-    vc = vectorstore.as_retriever()
+    llm = ChatGroq(
+        model_name="llama-3.3-70b-versatile",
+        temperature=0
+    )
+
     memory = ConversationBufferMemory(
-        memory_key='chat_history', return_messages=True)
+        memory_key='chat_history',
+        return_messages=True
+    )
+    
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
         retriever=vectorstore.as_retriever(),
         memory=memory
     )
-    return conversation_chain
 
+    return conversation_chain
 def _grade_essay(essay):
     messages = [
         {"role": "system",
@@ -105,11 +124,12 @@ def _grade_essay(essay):
     essay = "ESSAY : " + essay
 
     messages.append({'role': 'user','content':essay})
-    response = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-            temperature=0.4,
-            max_tokens=1500)
+    response = groq_client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=messages,
+    temperature=0.4,
+    max_tokens=1500
+)
     
     data = response.choices[0].message.content
 
