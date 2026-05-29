@@ -72,7 +72,7 @@ When a student submits a question, Cognify performs semantic retrieval to identi
 
 ![image](https://github.com/user-attachments/assets/2d9220ce-9573-4a09-9aa5-85d26747750e)
 
--### Step 1: Document Upload and Processing
+### Step 1: Document Upload and Processing
 
 Once a document is uploaded, Cognify automatically extracts the textual content from the PDF and processes it into smaller, manageable text chunks. This chunking process improves information retrieval efficiency and enables accurate context-based responses.
 
