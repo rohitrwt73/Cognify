@@ -67,8 +67,9 @@ def get_pdf_text(pdf_docs):
         pdf_txt = ""
         pdf_reader = PdfReader(pdf)
         for page in pdf_reader.pages:
-            text += page.extract_text()
-            pdf_txt += page.extract_text()
+            page_text = page.extract_text() or ""
+            text += page_text
+            pdf_txt += page_text
 
         with (open(filename, "w", encoding="utf-8")) as op_file:
             op_file.write(pdf_txt)
@@ -202,4 +203,5 @@ def extract_text_from_pdf(pdf_file):
     return text
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
