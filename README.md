@@ -11,36 +11,79 @@ Leveraging the power of machine learning, natural language & Gen AI, this tool a
 
 ## Objective:
 
-Cognify has two primary objectives.
+Cognify is an AI-powered academic research and essay evaluation platform designed to help students and educators interact with educational content more effectively.
 
-1. Academic Research and Understanding: Cognify provides clear and concise answers, summaries, and explanations tailored to the student's specific questions and the content of their documents.
-2. Essay Grading Rubric: Teachers and instructors can create and upload their own custom rubrics to personalize essay evaluation and ensure alignment with specific course requirements.
-   How it works:
-3. Document Upload and Processing: Users upload PDF documents, and the application extracts the textual content.
-4. Text Embedding and Semantic Search: The extracted text is processed, embeddings are generated, and a semantic search engine (using FAISS) allows for efficient retrieval of relevant information.
-5. Question Answering: Students' questions are processed, compared to the indexed content, and the most relevant information is used to generate a comprehensive answer using the OpenAI LLM.
-6. Essay Grading Rubric:
-   • Rubric Selection: Students can choose from pre-defined rubrics (e.g., IELTS, TOEFL) or upload custom rubrics created by their teachers.
-   • Essay Evaluation: The rubric tool analyses the student's essay against the selected rubric's criteria.
-   • Feedback Generation: Based on the analysis, Cognify provides feedback on the essay's strengths and areas for improvement, highlighting specific criteria met or not met.
-   Key Inputs:
-   For this particular project, we would need the below key inputs:
-   • Cognify
-   o Upload the document (pdf) for which you want chat bot.
-   • Essay Grading Rubric
-   o Choose the pre-defined rubric (IELTS/TOEFL) or upload the custom rubric.
-   o The rubric tool analyses the student's essay against the selected rubric's criteria.
+### Primary Objectives
+
+**1. Academic Research and Understanding**
+
+Cognify provides clear and context-aware answers, summaries, and explanations based on the content of uploaded documents. Students can ask questions in natural language and receive responses grounded in the uploaded material.
+
+**2. Essay Grading and Rubric-Based Evaluation**
+
+Teachers and instructors can create or upload custom grading rubrics to personalize essay evaluation and ensure alignment with specific academic requirements and assessment standards.
+
+### How It Works
+
+**1. Document Upload and Processing**
+
+Users upload PDF documents, and Cognify extracts and processes the textual content for analysis.
+
+**2. Text Embedding and Semantic Search**
+
+The extracted text is divided into meaningful chunks and converted into vector embeddings using Hugging Face Sentence Transformers. These embeddings are indexed using FAISS, enabling efficient semantic search and retrieval of relevant information.
+
+**3. Intelligent Question Answering**
+
+When a student submits a question, Cognify performs semantic retrieval to identify the most relevant document content and generates a context-aware response using Groq-powered Llama 3 large language models.
+
+**4. Essay Grading and Feedback Generation**
+
+* **Rubric Selection:** Students can select predefined rubrics such as IELTS or TOEFL, or upload custom rubrics provided by instructors.
+* **Essay Evaluation:** The system analyzes the essay against the selected rubric criteria using AI-powered assessment.
+* **Feedback Generation:** Cognify provides detailed feedback, highlighting strengths, weaknesses, and areas for improvement while aligning comments with the rubric requirements.
+
+### Core Technologies
+
+* Groq API (Llama 3 Models)
+* Hugging Face Sentence Transformers
+* FAISS Vector Database
+* LangChain
+* Python
+* Flask
+* Natural Language Processing (NLP)
+
+### Key Inputs
+
+#### Cognify Document Assistant
+
+* Upload one or more PDF documents.
+* Ask questions related to the uploaded content.
+* Receive context-aware answers generated from the document knowledge base.
+
+#### Essay Grading Module
+
+* Select a predefined rubric (IELTS, TOEFL, etc.) or upload a custom rubric.
+* Submit an essay for evaluation.
+* Receive AI-generated scoring, feedback, and improvement suggestions based on the chosen rubric.
+
 
 ## Architecture:
 
 ![image](https://github.com/user-attachments/assets/2d9220ce-9573-4a09-9aa5-85d26747750e)
 
-- **Step 1: Data Collection:**
-  Once the document is uploaded it initiates Cognify which automatically convert the extract the data from the document and convert the data into small chunks size.
-- **Step 2: Embeddings Generation**
-  In this stage, textual data is converted into numerical embeddings using advanced techniques. These embeddings capture the semantic relationships within the data, enabling to retrieve and analyze information efficiently
-- **Step 3: Query Execution **
-  Once the processing is done, Cognify uses OpenAI Large Language Model (LLM) to generate the response. Both context and query is passed to the LLM to generate the best possible response.
+-### Step 1: Document Upload and Processing
+
+Once a document is uploaded, Cognify automatically extracts the textual content from the PDF and processes it into smaller, manageable text chunks. This chunking process improves information retrieval efficiency and enables accurate context-based responses.
+
+### Step 2: Embedding Generation and Semantic Indexing
+
+The processed text chunks are converted into vector embeddings using Hugging Face Sentence Transformer models. These embeddings capture the semantic meaning and relationships within the text. The generated vectors are then stored and indexed using FAISS, enabling fast and efficient semantic search across the document content.
+
+### Step 3: Query Processing and Response Generation
+
+When a user submits a query, Cognify performs semantic search on the FAISS index to retrieve the most relevant document context. The retrieved context, along with the user's question, is then passed to a Groq-powered Llama 3 Large Language Model (LLM), which generates a context-aware and comprehensive response based on the document content.
+
 
 ## Product Demo:
 
