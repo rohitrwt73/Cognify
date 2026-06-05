@@ -120,7 +120,7 @@ def get_conversation_chain(vectorstore):
 def _grade_essay(essay):
     messages = [
         {"role": "system",
-        "content": "You are a Chinese bot, you are supposed to carefully grade the essay based on the given rubric and respond in Chinese only." + rubric_text}
+        "content": "You are a bot, you are supposed to carefully grade the essay based on the given rubric and respond in English only." + rubric_text}
     ]
     essay = "ESSAY : " + essay
 
